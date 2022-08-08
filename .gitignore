@@ -1,0 +1,9 @@
+*.exe
+*.spec
+*.jpg
+*.png
+*.pyc
+*.docx
+*.pdf
+
+/build
