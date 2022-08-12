@@ -22,23 +22,29 @@ class File(File_Functions):
         self.cnv = None
         self.pages=[]
         self.contents=[]
+        self.client=''
+        self.name=''
 
-    def create_file(self,client,document):
-        print(self.document)
+    def create_file(self):
+        # print(self.document)
         for paragraph in self.document.paragraphs:
+            print('paragraph:')
+            print(paragraph)
             if '[document title]' in paragraph.text:
-                paragraph.text =  paragraph.text.replace('[document title]',client)
-        
-        self.document.save(self.document_name+'.docx')
-        convert(document+'.docx',document+'.pdf')
-        os.remove(document+'.docx')
+                paragraph.text =  paragraph.text.replace('[document title]',self.client)
+        print(self.name)
+        print(self.client)
+        print('passou aqui')
+        self.document.save(self.name+'.docx')
+        convert(self.name+'.docx',self.name+'.pdf')
+        os.remove(self.name+'.docx')
         
         self.file_reader()
-        webbrowser.open(document+'.pdf')
+        webbrowser.open(self.name+'.pdf')
 
     def file_reader(self):
-        self.file=open(self.document_name+'.pdf','rb')
-        self.cnv = canvas.Canvas(self.document_name+'.pdf')
+        self.file=open(self.dname+'.pdf','rb')
+        self.cnv = canvas.Canvas(self.name+'.pdf')
         self.file_content = ppdf.PdfFileReader(self.file)
         
         print('pdf content readed')
@@ -61,21 +67,34 @@ class Application_Functions():
     
     def file_generate(self):
         self.gets_entry_values()
-        File.create_file(File, self.client_name, self.document_name)
+        self.pdf.create_file()
 
     def gets_entry_values(self):
-        self.document_name = self.document_name_entry.get()
-        self.client_name = self.document_client_entry.get()
+        # self.document_name = self.document_name_entry.get()
+        # self.client_name = self.document_client_entry.get()
         # print(self.document_name)
-        print(self.client_name)
+        # print(self.client_name)
+        self.pdf.name= self.document_name_entry.get()
+        self.pdf.client = self.document_client_entry.get()
+        print(self.pdf.name)
+        print(self.pdf.client)
+
         # self.set_client_name(self.document_name)
         # print(self.client_name)
 
+    def pdf_set(self):
+        self.pdf= File()
+        self.gets_entry_values()
+        # self.pdf.client = self.client_name
+        # self.pdf.name = self.document_name
+        # print()
     
 #building the application
 class Application(Application_Functions):
     def __init__(self):
         self.root=Tk()
+        self.pdf = File()
+        # print(self.pdf.document)
         self.base64_images()
         self.screen()
         self.window_buttons()
@@ -86,14 +105,6 @@ class Application(Application_Functions):
         self.labels_frame_logo()
         self.root.mainloop()
 
-        # self.set_file()
-    #creating a file atributes of application
-    # def set_file(self):
-    #     self.document = Document('docxtext.docx')
-    #     self.cnv = None
-    #     self.file_pages = []
-    #     self.file_content = []
-    #set main window definitions
     def screen(self):
         self.root.title('ECOSOL - PDF AUTO GENERATE')
         self.root.geometry("1000x700")
