@@ -20,7 +20,7 @@ class File_Functions():
 #Creating a class for documents notations
 class File(File_Functions):
     def __init__(self):
-        self.document = Document('docxtext.docx')
+        self.document = Document('Modelo de Diagnóstico_CTT.docx')
         self.cnv = None
         self.pages=[]
         self.contents=[]
@@ -32,8 +32,8 @@ class File(File_Functions):
         for paragraph in self.document.paragraphs:
             print('paragraph:')
             print(paragraph)
-            if '[document title]' in paragraph.text:
-                paragraph.text =  paragraph.text.replace('[document title]',self.client)
+            if '[Nome do Cliente]' in paragraph.text:
+                paragraph.text =  paragraph.text.replace('[Nome do Cliente]',self.client)
         print(self.name)
         print(self.client)
         print('passou aqui')
@@ -74,16 +74,6 @@ class Application_Functions():
         self.pdf.client = self.document_client_entry.get()
         print(self.pdf.name)
         print(self.pdf.client)
-
-    def pdf_set(self):
-        self.pdf= File()
-        self.gets_entry_values()
-    
-    def resize_image(self,image,height,width):
-        # return ImageTk.PhotoImage(image.resize((height,width),image.ANTIALIAS))
-        buffer = io.BytesIO()
-        img = Image.open(io.BytesIO(base64.b64decode(image)))
-        return(img.resize((height,width)))
 
 #building the application
 class Application(Application_Functions):
